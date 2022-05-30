@@ -1,0 +1,11 @@
+{
+  "name": "duplicated-files-finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Raraph84",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/collection": "^0.5.0"
+  }
+}
