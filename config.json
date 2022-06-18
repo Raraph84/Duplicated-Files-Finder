@@ -1,0 +1,8 @@
+{
+    "path": "test-files",
+    "excludeExtensions": [
+        "ini",
+        "jpg"
+    ],
+    "delete": true
+}
