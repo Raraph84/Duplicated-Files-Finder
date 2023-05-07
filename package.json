@@ -4,8 +4,5 @@
   "description": "",
   "main": "index.js",
   "author": "Raraph84",
-  "license": "ISC",
-  "dependencies": {
-    "@discordjs/collection": "^0.5.0"
-  }
+  "license": "ISC"
 }

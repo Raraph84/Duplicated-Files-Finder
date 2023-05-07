@@ -1,40 +1,35 @@
-const { default: Collection } = require("@discordjs/collection");
-const Fs = require("fs");
+const { promises: fs } = require("fs");
+const { createHash } = require("crypto");
 const Config = require("./config.json");
 
-const totalFiles = new Collection();
+const totalFiles = [];
 
-const checkDir = (dir) => {
+const checkDir = async (dir) => {
 
-    Fs.readdir(dir, (error, files) => files.forEach((file) => {
+    const files = await fs.readdir(dir);
 
-        if (error) console.log(error);
+    for (const file of files) {
 
         if (Config.excludeExtensions.includes(file.split(".").length > 1 ? file.split(".").pop().toLowerCase() : "dir"))
-            return;
+            continue;
 
-        Fs.lstat(dir + "/" + file, (error, stat) => {
+        const stat = await fs.lstat(dir + "/" + file);
 
-            if (error) console.log(error);
+        if (stat.isDirectory()) {
+            await checkDir(dir + "/" + file);
+            continue;
+        }
 
-            if (stat.isDirectory()) checkDir(dir + "/" + file);
-            else Fs.readFile(dir + "/" + file, (error, buffer) => {
+        const buffer = await fs.readFile(dir + "/" + file);
+        const hash = createHash("md5").update(buffer).digest("hex");
 
-                if (error) console.log(error);
-
-                const copy = totalFiles.findKey((val) => val.equals(buffer));
-                if (copy) {
-                    console.log(dir + "/" + file + " is a copy of " + copy);
-                    if (Config.delete) {
-                        Fs.unlink(dir + "/" + file, (error) => {
-                            if (error) console.log(error);
-                        });
-                    }
-                } else
-                    totalFiles.set(dir + "/" + file, buffer);
-            });
-        });
-    }));
+        const copy = totalFiles.find((file) => file.hash === hash);
+        if (copy) {
+            console.log(dir + "/" + file + " is a copy of " + copy.path);
+            if (Config.delete) await fs.unlink(dir + "/" + file);
+        } else
+            totalFiles.push({ path: dir + "/" + file, hash });
+    }
 }
 
 checkDir(Config.path);

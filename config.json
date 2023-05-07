@@ -4,5 +4,5 @@
         "ini",
         "jpg"
     ],
-    "delete": true
+    "delete": false
 }
