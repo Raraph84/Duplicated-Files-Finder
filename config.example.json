@@ -1,0 +1,10 @@
+{
+    "path": "D:/",
+    "excludeExtensions": [
+        "ini"
+    ],
+    "excludeDirs": [
+        "D:/$RECYCLE.BIN"
+    ],
+    "delete": false
+}
