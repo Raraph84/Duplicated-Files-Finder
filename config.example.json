@@ -1,10 +1,10 @@
 {
-    "path": "D:/",
+    "path": "test-files",
     "excludeExtensions": [
         "ini"
     ],
     "excludeDirs": [
-        "D:/$RECYCLE.BIN"
+        "node_modules"
     ],
     "delete": false
 }
